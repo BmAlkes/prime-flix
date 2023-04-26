@@ -10,6 +10,16 @@ const Favorite = () => {
 
     setFavorite(JSON.parse(myList) || []);
   }, []);
+  const handleRemoveMovie = (id) => {
+    let filterMovies = favorite.filter((item) => item.id !== id);
+
+    setFavorite(filterMovies);
+    localStorage.setItem("@primeflix", JSON.stringify(filterMovies));
+  };
+
+  {
+    favorite.length === 0 && <span>You dont have any movie save :()</span>;
+  }
   return (
     <div className="myMovies">
       <h1>My Movies</h1>
@@ -20,7 +30,9 @@ const Favorite = () => {
               <span>{item.title}</span>
               <div>
                 <Link to={`/movies/${item.id}`}>See details</Link>
-                <button>delete</button>
+                <button onClick={() => handleRemoveMovie(item.id)}>
+                  delete
+                </button>
               </div>
             </li>
           );
