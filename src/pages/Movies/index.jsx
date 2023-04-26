@@ -27,7 +27,24 @@ const MoviesDetails = () => {
         });
     }
     loadMovies();
-  }, []);
+  }, [id, navigate]);
+
+  const saveMovie = () => {
+    const myList = localStorage.getItem("@primeflix");
+
+    let movieSaved = JSON.parse(myList) || [];
+
+    const hasMovie = movieSaved.some(
+      (movieSaved) => movieSaved.id === movie.id
+    );
+
+    if (hasMovie) {
+      alert("This movie is in your list");
+      return;
+    }
+    movieSaved.push(movie);
+    localStorage.setItem("@primeflix", JSON.stringify(movieSaved));
+  };
 
   if (loading) {
     return (
@@ -48,8 +65,16 @@ const MoviesDetails = () => {
       <p>{movie.overview}</p>
       <strong>Rating: {movie.vote_average} / 10</strong>
       <div className="area-button">
-        <button>Save</button>
-        <button> Trailer</button>
+        <button onClick={saveMovie}>Save</button>
+        <button>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={`https://youtube.com/results?search_query=${movie.title}`}
+          >
+            Trailer
+          </a>
+        </button>
       </div>
     </div>
   );
