@@ -5,6 +5,7 @@ import "./styles.css";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function loadMovies() {
       const response = await api.get("movie/now_playing", {
@@ -15,10 +16,19 @@ const Home = () => {
         },
       });
       setMovies(response.data.results);
+      setLoading(false);
     }
     loadMovies();
   }, []);
   console.log(movies);
+  if (loading) {
+    return (
+      <div className="loading">
+        <h2>Loading....</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="lista-filmes">
